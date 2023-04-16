@@ -1,2 +1,2 @@
-# HTML5Baseline
-Basic set of codez to make a HTML5 game. Fork and mutate!
+# Structural Integrity Toy
+See [blog post](http://zarkonnen.com/structural_integrity_in_block_games)
