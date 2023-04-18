@@ -71,9 +71,9 @@ var mats = [
 	},
 	{
 		name: "canvas",
-		maxStrength: 10,
+		maxStrength: 12,
 		vertical: -3,
-		horizontal: -1,
+		horizontal: -2,
 		diagonal: -4,
 		thinWall: 0,
 		slope: 0,
@@ -256,7 +256,7 @@ function tick(ms) {
     		c.fillStyle = grid[y][x][0].color;
     		c.fillRect(x * gs, y * gs, gs, gs);
     		c.fillStyle = "black";
-    		if (showNumbers) {
+    		if (showNumbers && grid[y][x][0] != mats[1]) {
     			c.fillText("" + grid[y][x][1], x * gs + 2, y * gs + 15);
     		}
     		if (y < gridH - 1 && (mouseDown && cursor.x >= x * gs && cursor.x < x * gs + gs && cursor.y >= y * gs && cursor.y < y * gs + gs) || (click && click.x >= x * gs && click.x < x * gs + gs && click.y >= y * gs && click.y < y * gs + gs)) {
