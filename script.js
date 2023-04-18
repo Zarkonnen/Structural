@@ -6,6 +6,7 @@ var mats = [
 		horizontal: 0,
 		diagonal: 0,
 		thinWall: 0,
+		slope: 0,
 		color: "#613f2d"
 	},
 	{
@@ -15,6 +16,7 @@ var mats = [
 		horizontal: 0,
 		diagonal: 0,
 		thinWall: 0,
+		slope: 0,
 		color: "#aabbff"
 	},
 	{
@@ -24,15 +26,17 @@ var mats = [
 		horizontal: -30,
 		diagonal: -20,
 		thinWall: -5,
+		slope: 0,
 		color: "brown"
 	},
 	{
 		name: "wood",
-		maxStrength: 40,
+		maxStrength: 50,
 		vertical: -10,
 		horizontal: -12,
 		diagonal: -10,
 		thinWall: -2,
+		slope: 0,
 		color: "#815f4d"
 	},
 	{
@@ -42,24 +46,27 @@ var mats = [
 		horizontal: -50,
 		diagonal: -40,
 		thinWall: -4,
+		slope: 0,
 		color: "#555555"
 	},
 	{
 		name: "earth",
-		maxStrength: 80,
-		vertical: -20,
+		maxStrength: 50,
+		vertical: -8,
 		horizontal: -100,
-		diagonal: -30,
-		thinWall: -30,
+		diagonal: -10,
+		thinWall: -8,
+		slope: -15,
 		color: "#613f2d"
 	},
 	{
 		name: "straw",
 		maxStrength: 25,
 		vertical: -5,
-		horizontal: -20,
+		horizontal: -15,
 		diagonal: -8,
-		thinWall: -10,
+		thinWall: -5,
+		slope: -5,
 		color: "yellow"
 	},
 	{
@@ -69,6 +76,7 @@ var mats = [
 		horizontal: -1,
 		diagonal: -4,
 		thinWall: 0,
+		slope: 0,
 		color: "#dddddd"
 	},
 	{
@@ -78,6 +86,7 @@ var mats = [
 		horizontal: -8,
 		diagonal: -4,
 		thinWall: -2,
+		slope: 0,
 		color: "#aaaabb"
 	},
 ];
@@ -169,6 +178,18 @@ function recalculate() {
 					me[1] += me[0].thinWall;
 				}
 			}
+			// Slope penalty
+			if (y < gridH - 1) {
+				for (var x = 1; x < gridW - 1; x++) {
+					var me = grid[y][x];
+					if (grid[y + 1][x - 1][0] == mats[1]) {
+						me[1] += me[0].slope;
+					}
+					if (grid[y + 1][x + 1][0] == mats[1]) {
+						me[1] += me[0].slope;
+					}
+				}
+			}
 			// Loop in both directions
 			for (var x = 0; x < gridW; x++) {
 				var me = grid[y][x];
@@ -176,7 +197,7 @@ function recalculate() {
 				me[1] = Math.min(me[1], me[0].maxStrength);
 				// Vertical
 				grid[y - 1][x][1] = Math.min(grid[y - 1][x][0].maxStrength, Math.max(grid[y - 1][x][1], me[1] + me[0].vertical));
-				// Horizontal and diagonal
+				// Horizontal, diagonal
 				if (x > 0) {
 					grid[y][x - 1][1] = Math.min(grid[y][x - 1][0].maxStrength, Math.max(grid[y][x - 1][1], me[1] + me[0].horizontal));
 					grid[y - 1][x - 1][1] = Math.min(grid[y - 1][x - 1][0].maxStrength, Math.max(grid[y - 1][x - 1][1], me[1] + me[0].diagonal));
